@@ -1,0 +1,72 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "username": "admin",
+      "name": "Administrador del Sistema",
+      "role": "admin",
+      "passwordHash": "$2a$10$B3BFFtSEC5EI65qWBEuEiegPuPJ45LNu.wqKxCglbadVlf0l6m.Mu",
+      "createdAt": "2026-09-17T19:17:58.943Z"
+    },
+    {
+      "id": "u2",
+      "username": "doctor1",
+      "name": "Dr. Carlos Mendoza (Ortodoncista)",
+      "role": "doctor",
+      "passwordHash": "$2a$10$hmBBG/losxHMH8O83P7Nqupor8J5pV2PcLm8L7hH.ST8wXLgH1V7m",
+      "createdAt": "2026-09-17T19:17:59.111Z"
+    },
+    {
+      "id": "u3",
+      "username": "recepcion1",
+      "name": "María López (Recepción)",
+      "role": "reception",
+      "passwordHash": "$2a$10$qUHlWwMHkiiyQjRwaMY1I.enBLK9PUQm5HSmhTrXbS/GaH2mfF5uK",
+      "createdAt": "2026-09-17T19:17:59.274Z"
+    }
+  ],
+  "fichas": [
+    {
+      "id": "f1",
+      "dni": "72849102",
+      "nombres": "Juan Pérez Rodríguez",
+      "edad": 28,
+      "sexo": "Masculino",
+      "fecha": "2026-09-15",
+      "examenExtraoral": {
+        "biotipo": "Meso Facial",
+        "perfil": "Convexo",
+        "simetria": "Simétrico",
+        "observacionesSimetria": ""
+      },
+      "examenIntraoral": {
+        "queilogramaComisura": "Normal",
+        "codificacionSuzuki": "Tipo I-L",
+        "palatograma": "Líneas A, B paralelas, zonas 1 y 2 normales",
+        "relacionMaxilarMandibular": "Protrusión Maxilar",
+        "relacionMolar": "Clase I",
+        "relacionCanina": "Clase I",
+        "maloclusiones": [
+          "Mordida cruzada anterior"
+        ],
+        "overjet": 3.5,
+        "overbite": 2,
+        "arcosDentales": {
+          "superior": "Parabólico/U",
+          "inferior": "Ovoide"
+        },
+        "kennedy": {
+          "clase": "Clase III",
+          "modificacion": "Mod 1"
+        },
+        "curvaSpee": {
+          "medida": 1.5,
+          "estado": "Normal"
+        }
+      },
+      "diagnostico": "Maloclusión Clase I con ligero overjet aumentado.",
+      "creadoPor": "Dr. Carlos Mendoza",
+      "createdAt": "2026-09-15T10:30:00.000Z"
+    }
+  ]
+}
