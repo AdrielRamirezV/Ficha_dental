@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Stethoscope, User, LogOut, Users, FileText, PlusCircle } from 'lucide-react';
+import { Stethoscope, User, LogOut, Users, FileText, PlusCircle, Key } from 'lucide-react';
+import ChangePasswordModal from './ChangePasswordModal';
 
 export default function Navbar({ currentTab, setCurrentTab }) {
   const { user, logout } = useAuth();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const getRoleBadge = (role) => {
     switch (role) {
@@ -78,13 +80,21 @@ export default function Navbar({ currentTab, setCurrentTab }) {
           </nav>
 
           {/* User Profile & Logout */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="hidden sm:flex items-center space-x-3 text-right">
               <div>
                 <p className="text-sm font-semibold text-slate-800">{user?.name}</p>
                 <div className="flex justify-end mt-0.5">{getRoleBadge(user?.role)}</div>
               </div>
             </div>
+
+            <button
+              onClick={() => setIsPasswordModalOpen(true)}
+              title="Cambiar mi contraseña"
+              className="p-2 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors flex items-center space-x-1"
+            >
+              <Key className="w-5 h-5" />
+            </button>
 
             <button
               onClick={logout}
@@ -97,6 +107,12 @@ export default function Navbar({ currentTab, setCurrentTab }) {
 
         </div>
       </div>
+
+      {/* Modal para que cualquier usuario cambie su contraseña */}
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </header>
   );
 }

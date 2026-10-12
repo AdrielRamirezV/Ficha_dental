@@ -233,7 +233,7 @@ app.delete('/api/users/:id', authenticateToken, authorizeRoles('admin'), (req, r
 
 app.put('/api/users/:id/password', authenticateToken, (req, res) => {
   const { id } = req.params;
-  const { newPassword } = req.body;
+  const { currentPassword, newPassword } = req.body;
 
   if (!newPassword || newPassword.length < 6) {
     return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 6 caracteres' });
@@ -248,6 +248,15 @@ app.put('/api/users/:id/password', authenticateToken, (req, res) => {
   const user = db.users.find(u => u.id === id);
   if (!user) {
     return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  // If regular user or if currentPassword is provided, verify it
+  if (currentPassword) {
+    if (!bcrypt.compareSync(currentPassword, user.passwordHash)) {
+      return res.status(400).json({ error: 'La contraseña actual ingresada es incorrecta' });
+    }
+  } else if (req.user.role !== 'admin') {
+    return res.status(400).json({ error: 'Debe ingresar su contraseña actual' });
   }
 
   user.passwordHash = bcrypt.hashSync(newPassword, 10);
