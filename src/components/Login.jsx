@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Stethoscope, Lock, User, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Stethoscope, Lock, User, AlertCircle } from 'lucide-react';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -17,20 +17,6 @@ export default function Login() {
       await login(username, password);
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDemoLogin = async (userDemo, passDemo) => {
-    setUsername(userDemo);
-    setPassword(passDemo);
-    setError('');
-    setLoading(true);
-    try {
-      await login(userDemo, passDemo);
-    } catch (err) {
-      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -99,37 +85,6 @@ export default function Login() {
               {loading ? 'Ingresando...' : 'Iniciar Sesión'}
             </button>
           </form>
-
-          {/* Demo Accounts Quick-Login */}
-          <div className="mt-8 pt-6 border-t border-slate-200">
-            <div className="flex items-center space-x-2 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-              <ShieldCheck className="w-4 h-4 text-teal-600" />
-              <span>Accesos de Prueba por Rol:</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('admin', 'admin123')}
-                className="py-2 px-2 bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-medium rounded-lg border border-purple-200 transition-colors text-center"
-              >
-                Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('doctor1', 'doctor123')}
-                className="py-2 px-2 bg-teal-50 hover:bg-teal-100 text-teal-700 text-xs font-medium rounded-lg border border-teal-200 transition-colors text-center"
-              >
-                Odontólogo
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoLogin('recepcion1', 'recepcion123')}
-                className="py-2 px-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 transition-colors text-center"
-              >
-                Recepción
-              </button>
-            </div>
-          </div>
 
         </div>
       </div>

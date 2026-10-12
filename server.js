@@ -231,6 +231,30 @@ app.delete('/api/users/:id', authenticateToken, authorizeRoles('admin'), (req, r
   res.json({ message: 'Usuario eliminado exitosamente' });
 });
 
+app.put('/api/users/:id/password', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const { newPassword } = req.body;
+
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 6 caracteres' });
+  }
+
+  // Allow admin or the user themselves
+  if (req.user.id !== id && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'No autorizado para cambiar esta contraseña' });
+  }
+
+  const db = readDB();
+  const user = db.users.find(u => u.id === id);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  user.passwordHash = bcrypt.hashSync(newPassword, 10);
+  writeDB(db);
+  res.json({ message: 'Contraseña actualizada exitosamente' });
+});
+
 // --- CLINICAL FICHAS ROUTES ---
 app.get('/api/fichas', authenticateToken, (req, res) => {
   const { search } = req.query;

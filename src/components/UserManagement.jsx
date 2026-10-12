@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Trash2, Shield, UserCheck, Stethoscope, Building } from 'lucide-react';
+import { UserPlus, Trash2, Shield, UserCheck, Stethoscope, Building, Key } from 'lucide-react';
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -79,6 +79,34 @@ export default function UserManagement() {
       }
 
       setUsers(users.filter(u => u.id !== id));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleChangePassword = async (id, userName) => {
+    const newPass = prompt(`Ingrese la nueva contraseña para "${userName}" (mínimo 6 caracteres):`);
+    if (!newPass) return;
+    if (newPass.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('dental_token');
+      const res = await fetch(`/api/users/${id}/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ newPassword: newPass })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al actualizar contraseña');
+
+      alert(`Contraseña actualizada con éxito para "${userName}"`);
     } catch (err) {
       alert(err.message);
     }
@@ -201,15 +229,25 @@ export default function UserManagement() {
                     </div>
                   </div>
 
-                  {u.username !== 'admin' && (
+                  <div className="flex items-center space-x-1">
                     <button
-                      onClick={() => handleDeleteUser(u.id, u.username)}
-                      title="Eliminar usuario"
-                      className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      onClick={() => handleChangePassword(u.id, u.name)}
+                      title="Cambiar contraseña"
+                      className="p-2 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Key className="w-4 h-4" />
                     </button>
-                  )}
+
+                    {u.username !== 'admin' && (
+                      <button
+                        onClick={() => handleDeleteUser(u.id, u.username)}
+                        title="Eliminar usuario"
+                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
